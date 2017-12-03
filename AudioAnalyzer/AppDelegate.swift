@@ -7,15 +7,43 @@
 //
 
 import UIKit
+import AVFoundation
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
+    let sampleRate = 44100.0
+    let bufSize = 512
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        let session = AVAudioSession.sharedInstance()
+
+        do {
+            try session.setCategory(AVAudioSessionCategoryRecord)
+            try session.setCategory(AVAudioSessionCategoryPlayAndRecord, mode: AVAudioSessionModeMeasurement, options: AVAudioSessionCategoryOptions.interruptSpokenAudioAndMixWithOthers)
+            try session.setMode(AVAudioSessionModeMeasurement)
+            try session.setPreferredSampleRate(sampleRate)
+            try session.setPreferredIOBufferDuration(Double(bufSize)/sampleRate)
+
+            session.requestRecordPermission({ (success) in
+                if success {
+                    print("Permission Granted")
+                } else {
+                    print("So Sad :( ")
+                }
+            })
+        } catch {
+            print("Audio not loaded properly: \(error)")
+        }
+
+//        print(session.availableInputs)
+//        print(session.availableModes)
+//        print(session.availableCategories)
+//        print(session.currentRoute)
+//        print(session.inputDataSource)
         return true
     }
 
@@ -39,6 +67,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+
+    func applicationDidFinishLaunching(_ application: UIApplication) {
+        //
     }
 
 
