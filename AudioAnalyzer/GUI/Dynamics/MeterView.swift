@@ -15,8 +15,8 @@ class MeterView: UIView {
         bar.setDynamics(newValues)
     }
 
-    var bar = MeterBarView()
-    var ticks = MeterTicksView()
+    var bar 	= MeterBarView()
+    var ticks 	= MeterTicksView()
 
     var limits: (min: Double, max: Double) = (-60.0, 0.0)
     var tickValues: [Int] = (-6...1).map{ $0 * 10 }
