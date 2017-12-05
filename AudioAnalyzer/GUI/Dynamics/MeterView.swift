@@ -11,19 +11,10 @@ import UIKit
 @IBDesignable
 class MeterView: UIView {
 
-    func setDynamics(newValues: Dynamics) {
-        bar.setDynamics(newValues)
-    }
+    func setDynamics(newValues: Dynamics) { bar.setDynamics(newValues) }
 
-    var bar 	= MeterBarView()
-    var ticks 	= MeterTicksView()
-
-    var limits: (min: Double, max: Double) = (-60.0, 0.0)
-    var tickValues: [Int] = (-6...1).map{ $0 * 10 }
-
-    var dangerLevel = -3.0
-    var cautionLevel = -6.0
-    var safeLevel = -12.0
+    var bar     = MeterBarView()
+    var ticks     = MeterTicksView()
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -43,12 +34,6 @@ class MeterView: UIView {
 
         ticks.frame = CGRect(x: bounds.origin.x + bounds.width * 0.75, y: bounds.origin.y, width: bounds.width * 0.25, height: bounds.height)
     }
-
-
-}
-
-func normalize(value: Double, withRange range: (min: Double, max: Double) ) -> Double {
-	return (value - range.min) / (range.max - range.min)
 }
 
 extension CGRect {
