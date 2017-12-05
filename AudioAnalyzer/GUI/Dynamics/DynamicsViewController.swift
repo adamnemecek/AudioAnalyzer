@@ -49,6 +49,7 @@ class DynamicsViewController: UIViewController {
     }
 
     override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
         timer.invalidate()
 		analyzer.stop()
     }

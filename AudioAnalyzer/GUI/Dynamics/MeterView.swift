@@ -8,7 +8,6 @@
 
 import UIKit
 
-@IBDesignable
 class MeterView: UIView {
 
     func setDynamics(newValues: Dynamics) { bar.setDynamics(newValues) }

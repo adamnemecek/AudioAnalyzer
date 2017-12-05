@@ -10,26 +10,41 @@ import UIKit
 
 class SpatialViewController: UIViewController {
 
+    var timer = Timer()
+    var controller = AudioController(bufSize: 1024)
+    var analyzer = SpatialAnalyzer()
+
+    @IBOutlet weak var lissajousView: LissajousView!
+    @IBOutlet weak var phaseMeterView: PhaseMeterView!
+
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        analyzer.controller = controller
+        analyzer.run()
+        timer.invalidate()
+        timer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true, block: { (timer) in
+            self.updateGraphs()
+        })
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+		timer.invalidate()
+        analyzer.stop()
     }
-    
 
-    /*
-    // MARK: - Navigation
+    func updateGraphs() {
+        let phas = analyzer.phaseMeter.getCurrentPhaseValues()
+        let XY = analyzer.goniometer.getCurrentvalues()
+        phaseMeterView.setValue(phas)
+        lissajousView.setValue(x: CGFloat(XY.l), y: CGFloat(XY.r))
+    }
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    @IBAction func configButtonPressed(_ sender: UIBarButtonItem) {
+        performSegue(withIdentifier: "segueToSpatialConfigTab", sender: nil)
+    }
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
     }
-    */
 
 }

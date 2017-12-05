@@ -11,7 +11,7 @@ import Foundation
 
 class PeakTracker : Tracker{
 
-    private var coefs2 = OnePoleCoefs()
+    var coefs2 = OnePoleCoefs()
 
     func setAttack(_ time: Double, sampleRate fs: Double) {
         coefs.setTau(sec: time, fs: fs)
@@ -74,5 +74,41 @@ class IntegratorTracker : Tracker {
         updateTau()
         let curValue = fabs(input)
         super.process(input: curValue)
+    }
+}
+
+class PhasePeakTracker : PeakTracker {
+    override func process(input: Double) {
+        if fabs(input) > fabs(state) {
+            state += coefs.b0 * ( input - state )
+        } else {
+            state += coefs2.b0 * ( input - state )
+        }
+
+    }
+}
+
+class PhaseRMSTracker : Tracker {
+    func setTime(_ time: Double, sampleRate fs: Double) {
+        coefs.setTau(sec: time, fs: fs)
+    }
+
+    override var value: Double { return sqrt(state) }
+    override func process(input: Double) {
+        let curValue = input * input * input / fabs(input)
+        super.process(input: curValue)
+    }
+}
+
+class PhaseIntegratorTracker : IntegratorTracker {
+    override func process(input: Double) {
+        super.updateTau()
+        state += coefs.b0 * ( input - state )
+    }
+}
+
+class PurePeakTracker : Tracker {
+    func setTime(_ time: Double, sampleRate fs: Double) {
+        coefs.setTau(sec: time, fs: fs)
     }
 }
