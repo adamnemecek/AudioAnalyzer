@@ -18,10 +18,6 @@ class MeterView: UIView {
     var bar = MeterBarView()
     var ticks = MeterTicksView()
 
-	@IBInspectable var peakValue: CGFloat = 0.9
-    @IBInspectable var rmsValue: CGFloat = 0.5
-    @IBInspectable var vuValue: CGFloat = 0.2
-
     var limits: (min: Double, max: Double) = (-60.0, 0.0)
     var tickValues: [Int] = (-6...1).map{ $0 * 10 }
 
@@ -32,13 +28,14 @@ class MeterView: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
         backgroundColor = UIColor.clear
+        isOpaque = false
+        bar.backgroundColor = UIColor.clear
+        ticks.backgroundColor = UIColor.clear
+        bar.isOpaque = false
+        ticks.isOpaque = false
         addSubview(bar)
         addSubview(ticks)
     }
-
-//    override func draw(_ rect: CGRect) {
-//
-//    }
 
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -46,6 +43,8 @@ class MeterView: UIView {
 
         ticks.frame = CGRect(x: bounds.origin.x + bounds.width * 0.75, y: bounds.origin.y, width: bounds.width * 0.25, height: bounds.height)
     }
+
+
 }
 
 func normalize(value: Double, withRange range: (min: Double, max: Double) ) -> Double {

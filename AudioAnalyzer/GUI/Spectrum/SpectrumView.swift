@@ -35,7 +35,6 @@ class SpectrumView: UIView {
         drawSpectralPath(rect: rect)
     }
 
-
     func drawSpectralPath(rect: CGRect) {
         let leftPath = UIBezierPath()
         let rightPath = UIBezierPath()
@@ -45,16 +44,12 @@ class SpectrumView: UIView {
                 rightPath.move(to: CGPoint(x: rect.minX, y: rect.midY - rect.midY * rNormMags[0]))
             } else {
                 leftPath.addLine(to: CGPoint(x: rect.minX + rect.maxX * normLogBins[n], y: rect.midY - rect.midY * lNormMags[n]))
-                rightPath.addLine(to: CGPoint(x: rect.minX + rect.maxX * normLogBins[n], y: rect.midY - rect.midY * lNormMags[n])))
+                rightPath.addLine(to: CGPoint(x: rect.minX + rect.maxX * normLogBins[n], y: rect.midY - rect.midY * rNormMags[n]))
             }
         }
+        UIColor.blue.setStroke()
         leftPath.stroke()
+        UIColor.red.setStroke()
+        rightPath.stroke()
     }
-
-
-
-
-
-
-
 }

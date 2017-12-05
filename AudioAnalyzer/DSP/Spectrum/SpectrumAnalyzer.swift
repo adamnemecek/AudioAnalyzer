@@ -59,14 +59,23 @@ class SpectrumAnalyzer {
 
     func installTap() {
         if let input = controller?.input {
+            if input.numberOfInputs == 2 {
             input.installTap(onBus: 0, bufferSize: controller!.bufSize, format: input.outputFormat(forBus: 0), block: { (buffer, timeStamp) in
                 if let data = buffer.floatChannelData {
                     let bufSize = Int(buffer.frameLength)
                     for i in 0..<bufSize {
-						self.process(leftInput: data[0][i], rightInput: data[0][i])
+						self.process(leftInput: data[0][i], rightInput: data[1][i])
                     }
                 }
-            })
+            })} else {
+            input.installTap(onBus: 0, bufferSize: controller!.bufSize, format: input.outputFormat(forBus: 0), block: { (buffer, timeStamp) in
+                if let data = buffer.floatChannelData {
+                    let bufSize = Int(buffer.frameLength)
+                    for i in 0..<bufSize {
+                        self.process(leftInput: data[0][i], rightInput: data[0][i])
+                    }
+                }
+            })}
         }
     }
 
@@ -97,8 +106,8 @@ class SpectrumAnalyzer {
         right.reserveCapacity(fftSize)
 
         for i in 0..<fftSize {
-            left.append(lSpec[i])
-            right.append(rSpec[i])
+            left.append(20 * log10(lSpec[i]))
+            right.append(20 * log10(rSpec[i]))
         }
 
         return (left, right)
@@ -123,7 +132,7 @@ class SpectrumAnalyzer {
         right.reserveCapacity(fftSize)
 
         for i in 0..<fftSize {
-            right[i] = rSpec[i]
+            right.append(20 * log10(lSpec[i]))
         }
 
         return right

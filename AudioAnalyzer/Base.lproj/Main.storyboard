@@ -245,6 +245,16 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </view>
+                                    <view opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BWP-0b-brB" customClass="MeterView" customModule="AudioAnalyzer" customModuleProvider="target">
+                                        <rect key="frame" x="600" y="120" width="70" height="350"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="peakValue">
+                                                <real key="value" value="0.0"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </view>
                                     <view opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZRb-Kp-9uF" customClass="MeterView" customModule="AudioAnalyzer" customModuleProvider="target">
                                         <rect key="frame" x="750" y="120" width="70" height="350"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -269,16 +279,6 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <view opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BWP-0b-brB" customClass="MeterView" customModule="AudioAnalyzer" customModuleProvider="target">
-                                        <rect key="frame" x="600" y="120" width="70" height="350"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                        <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="peakValue">
-                                                <real key="value" value="0.0"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                    </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="L" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="znO-O8-OjA">
                                         <rect key="frame" x="131" y="478" width="10" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -335,6 +335,10 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="lMeter" destination="BC6-oz-TID" id="8g8-6a-gut"/>
+                        <outlet property="mMeter" destination="BWP-0b-brB" id="v3W-7f-snt"/>
+                        <outlet property="rMeter" destination="KfQ-ag-Sm1" id="zBk-4B-92I"/>
+                        <outlet property="sMeter" destination="ZRb-Kp-9uF" id="1qS-3Z-T40"/>
                         <segue destination="ffh-us-amg" kind="show" identifier="segueToDynamicsConfigTab" id="ehc-1k-OmP"/>
                     </connections>
                 </viewController>

@@ -39,11 +39,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("Audio not loaded properly: \(error)")
         }
 
-//        print(session.availableInputs)
-//        print(session.availableModes)
-//        print(session.availableCategories)
-//        print(session.currentRoute)
-//        print(session.inputDataSource)
+        print(session.availableInputs)
+        print(session.availableModes)
+        print(session.availableCategories)
+        print(session.currentRoute)
+        print(session.inputDataSource)
         return true
     }
 

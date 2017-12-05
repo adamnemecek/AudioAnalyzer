@@ -26,7 +26,7 @@ class SpectrumViewController: UIViewController {
         analyzer.controller = controller
         analyzer.run()
 
-        spectrumVertLimits = (-60, 10)
+        spectrumVertLimits = (-120, 10)
         spectrumHorzLimits = (0, 22050)
 
         setSpectrumViewNormalBins()
@@ -41,13 +41,12 @@ class SpectrumViewController: UIViewController {
         let values = analyzer.getSpectrum()
 
         let leftNormValues = values.left.map{
-            spectrumVertLimits.max - $0 / spectrumVertLimits.min
+            -$0 / spectrumVertLimits.min
         }
         let rightNormValues = values.right.map{
-            spectrumVertLimits.max - $0 / spectrumVertLimits.min
+            -$0 / spectrumVertLimits.min
         }
         spectrum.setValues(left: leftNormValues, right: rightNormValues)
-
     }
 
     func setSpectrumViewNormalBins() {
@@ -56,6 +55,7 @@ class SpectrumViewController: UIViewController {
         let min = linNormBins[1]
         let max = 1.0
         let logBins = linNormBins.map{ log(($0 + min)/min) / log(max/min) }
+
         spectrum.setNormLogBins(logBins)
     }
 

@@ -8,7 +8,6 @@
 
 import UIKit
 
-@IBDesignable
 class MeterBarView: UIView {
     
     private var peakValue: CGFloat 	{ return CGFloat(dynamics.peakValue) }
@@ -29,6 +28,13 @@ class MeterBarView: UIView {
                                  clip: false) {
         didSet{ setNeedsDisplay()
         }
+    }
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        print("esto sirve?")
+        backgroundColor = UIColor.clear
+
     }
 
     func setDynamics(_ newValues: Dynamics) {

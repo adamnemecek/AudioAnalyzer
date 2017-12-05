@@ -38,14 +38,23 @@ class DynamicsAnalyzer {
 
     func installTap() {
         if let input = controller?.input {
-            input.installTap(onBus: 0, bufferSize: controller!.bufSize, format: input.outputFormat(forBus: 0), block: { (buffer, timeStamp) in
-                if let data = buffer.floatChannelData {
-                    let bufSize = Int(buffer.frameLength)
-                    for i in 0..<bufSize {
-                        self.process(leftInput: data[0][i], rightInput: data[0][i])
+            if input.numberOfInputs == 2 {
+                input.installTap(onBus: 0, bufferSize: controller!.bufSize, format: input.outputFormat(forBus: 0), block: { (buffer, timeStamp) in
+                    if let data = buffer.floatChannelData {
+                        let bufSize = Int(buffer.frameLength)
+                        for i in 0..<bufSize {
+                            self.process(leftInput: data[0][i], rightInput: data[1][i])
+                        }
                     }
-                }
-            })
+                })} else {
+                input.installTap(onBus: 0, bufferSize: controller!.bufSize, format: input.outputFormat(forBus: 0), block: { (buffer, timeStamp) in
+                    if let data = buffer.floatChannelData {
+                        let bufSize = Int(buffer.frameLength)
+                        for i in 0..<bufSize {
+                            self.process(leftInput: data[0][i], rightInput: data[0][i])
+                        }
+                    }
+                })}
         }
     }
 

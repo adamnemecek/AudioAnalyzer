@@ -8,7 +8,7 @@
 
 import UIKit
 
-@IBDesignable
+
 class MeterTicksView: UIView {
     
     var tickValues = (1...6).map{$0 * 10}
