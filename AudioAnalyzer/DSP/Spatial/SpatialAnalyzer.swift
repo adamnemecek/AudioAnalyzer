@@ -10,26 +10,31 @@ import Foundation
 import AVFoundation
 
 class SpatialAnalyzer {
-    var audioSession = AVAudioSession.sharedInstance()
-    var controller: AudioController!
+    var audioController: AVAudioController!
 
-    lazy var phaseMeter = PhaseMeter(sampleRate: sampleRate)
-    lazy var goniometer = Goniometer(sampleRate: sampleRate)
+    var phaseMeter: PhaseMeter
+    var goniometer: Goniometer
 
-    var sampleRate: Double { return audioSession.sampleRate }
+    init (_ controller: AVAudioController) {
+        audioController = controller
+        phaseMeter = PhaseMeter(sampleRate: audioController.sampleRate)
+        goniometer = Goniometer(sampleRate: audioController.sampleRate)
+        initialize()
+    }
 
     func initialize() {
-		phaseMeter.peakPhase.setAttack(0.01, sampleRate: sampleRate)
-        phaseMeter.peakPhase.setRelease(0.3, sampleRate: sampleRate)
-        phaseMeter.rmsPhase.setTime(0.12, sampleRate: sampleRate)
+        let fs = audioController.sampleRate
+		phaseMeter.peakPhase.setAttack(0.01, sampleRate: fs)
+        phaseMeter.peakPhase.setRelease(0.3, sampleRate: fs)
+        phaseMeter.rmsPhase.setTime(0.12, sampleRate: fs)
 
-        phaseMeter.peakL.setTime(0.01, sampleRate: sampleRate)
-        phaseMeter.peakR.setTime(0.01, sampleRate: sampleRate)
-        phaseMeter.rmsL.setTime(0.12, sampleRate: sampleRate)
-        phaseMeter.rmsR.setTime(0.12, sampleRate: sampleRate)
+        phaseMeter.peakL.setTime(0.01, sampleRate: fs)
+        phaseMeter.peakR.setTime(0.01, sampleRate: fs)
+        phaseMeter.rmsL.setTime(0.12, sampleRate: fs)
+        phaseMeter.rmsR.setTime(0.12, sampleRate: fs)
         
-        goniometer.lTrace.setTime(0.01, sampleRate: sampleRate)
-        goniometer.rTrace.setTime(0.01, sampleRate: sampleRate)
+        goniometer.lTrace.setTime(0.01, sampleRate: fs)
+        goniometer.rTrace.setTime(0.01, sampleRate: fs)
     }
 
     func run() {
@@ -42,9 +47,9 @@ class SpatialAnalyzer {
     }
 
     func installTap() {
-        if let input = controller?.input {
+        if let input = audioController?.input {
             if input.numberOfInputs == 2 {
-                input.installTap(onBus: 0, bufferSize: controller!.bufSize, format: input.outputFormat(forBus: 0), block: { (buffer, timeStamp) in
+                input.installTap(onBus: 0, bufferSize: audioController!.bufSize, format: input.outputFormat(forBus: 0), block: { (buffer, timeStamp) in
                     if let data = buffer.floatChannelData {
                         let bufSize = Int(buffer.frameLength)
                         for i in 0..<bufSize {
@@ -52,7 +57,7 @@ class SpatialAnalyzer {
                         }
                     }
                 })} else {
-                input.installTap(onBus: 0, bufferSize: controller!.bufSize, format: input.outputFormat(forBus: 0), block: { (buffer, timeStamp) in
+                input.installTap(onBus: 0, bufferSize: audioController!.bufSize, format: input.outputFormat(forBus: 0), block: { (buffer, timeStamp) in
                     if let data = buffer.floatChannelData {
                         let bufSize = Int(buffer.frameLength)
                         for i in 0..<bufSize {
@@ -64,7 +69,7 @@ class SpatialAnalyzer {
     }
 
     func removeTap() {
-        if let input = controller?.input{
+        if let input = audioController?.input{
             input.removeTap(onBus: 0)
         }
     }

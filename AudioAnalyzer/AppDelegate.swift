@@ -13,39 +13,15 @@ import AVFoundation
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
-    let sampleRate = 44100.0
-    let bufSize = 512
+    var audioController: AVAudioController!
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        let session = AVAudioSession.sharedInstance()
 
-        do {
-            try session.setCategory(AVAudioSessionCategoryRecord)
-            try session.setCategory(AVAudioSessionCategoryPlayAndRecord, mode: AVAudioSessionModeMeasurement, options: AVAudioSessionCategoryOptions.interruptSpokenAudioAndMixWithOthers)
-            try session.setMode(AVAudioSessionModeMeasurement)
-            try session.setPreferredSampleRate(sampleRate)
-            try session.setPreferredIOBufferDuration(Double(bufSize)/sampleRate)
+		let sampleRate = 44100.0
+        let bufSize = UInt32(512)
 
-            session.requestRecordPermission({ (success) in
-                if success {
-                    print("Permission Granted")
-                } else {
-                    print("So Sad :( ")
-                }
-            })
-        } catch {
-            print("Audio not loaded properly: \(error)")
-        }
-
-
-
-
-        print(session.availableInputs!)
-        print(session.availableModes)
-        print(session.availableCategories)
-        print(session.currentRoute)
+        audioController = AVAudioController(sampleRate: sampleRate, bufSize: bufSize)
         return true
     }
 

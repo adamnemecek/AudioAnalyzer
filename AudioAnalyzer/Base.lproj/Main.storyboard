@@ -49,7 +49,7 @@
                         <barButtonItem key="rightBarButtonItem" systemItem="edit" id="czz-p7-xPu"/>
                     </navigationItem>
                     <connections>
-                        <outlet property="spectrum" destination="d1w-LC-yXl" id="nAZ-Kl-feZ"/>
+                        <outlet property="spectrumView" destination="d1w-LC-yXl" id="nAZ-Kl-feZ"/>
                         <segue destination="yX4-hR-16L" kind="show" identifier="SegueToSpectralConfig" id="bzj-5A-aB7"/>
                     </connections>
                 </viewController>
@@ -99,10 +99,10 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="e1I-K0-7Tf">
-                                <rect key="frame" x="306.5" y="381" width="411" height="251.5"/>
+                                <rect key="frame" x="300.5" y="381" width="423" height="251.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleAspectFit" axis="vertical" distribution="fillProportionally" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="9BL-Xr-3TI">
-                                        <rect key="frame" x="0.0" y="0.0" width="411" height="50.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="423" height="50.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Average Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MNb-Vw-cCl">
                                                 <rect key="frame" x="0.0" y="0.0" width="104.5" height="20.5"/>
@@ -111,12 +111,12 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="d4B-58-sq6">
-                                                <rect key="frame" x="-2" y="20.5" width="415" height="31"/>
+                                                <rect key="frame" x="-2" y="20.5" width="427" height="31"/>
                                             </slider>
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleAspectFit" axis="vertical" distribution="fillProportionally" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="o7P-ch-SbS">
-                                        <rect key="frame" x="0.0" y="100.5" width="411" height="50.5"/>
+                                        <rect key="frame" x="0.0" y="100.5" width="423" height="50.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Peak Hold Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0ks-Nt-MS8">
                                                 <rect key="frame" x="0.0" y="0.0" width="120" height="20.5"/>
@@ -125,12 +125,12 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Yk5-RB-Bgx">
-                                                <rect key="frame" x="-2" y="20.5" width="415" height="31"/>
+                                                <rect key="frame" x="-2" y="20.5" width="427" height="31"/>
                                             </slider>
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleAspectFit" axis="vertical" distribution="fillProportionally" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="f3C-JX-Ufv">
-                                        <rect key="frame" x="0.0" y="201" width="411" height="50.5"/>
+                                        <rect key="frame" x="0.0" y="201" width="423" height="50.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Window Size" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HTe-z4-iIA">
                                                 <rect key="frame" x="0.0" y="0.0" width="98.5" height="20.5"/>
@@ -139,7 +139,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="3AM-qX-c4t">
-                                                <rect key="frame" x="-2" y="20.5" width="415" height="31"/>
+                                                <rect key="frame" x="-2" y="20.5" width="427" height="31"/>
                                             </slider>
                                         </subviews>
                                     </stackView>
@@ -184,7 +184,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="452" height="289"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleAspectFill" axis="vertical" distribution="fillProportionally" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="lhK-5z-NYg">
-                                                <rect key="frame" x="41" y="0.0" width="370" height="50"/>
+                                                <rect key="frame" x="102" y="0.0" width="248" height="50"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Peak Settling Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MYQ-77-iYk">
                                                         <rect key="frame" x="0.0" y="0.0" width="142.5" height="20"/>
@@ -193,12 +193,12 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="f7H-SW-O7b">
-                                                        <rect key="frame" x="-2" y="20" width="374" height="31"/>
+                                                        <rect key="frame" x="-2" y="20" width="252" height="31"/>
                                                     </slider>
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleAspectFill" axis="vertical" distribution="fillProportionally" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="ASD-gs-09V">
-                                                <rect key="frame" x="41" y="80" width="370" height="49.5"/>
+                                                <rect key="frame" x="102" y="80" width="248" height="49.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RMS Settling Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e02-o7-gxY">
                                                         <rect key="frame" x="0.0" y="0.0" width="141" height="20"/>
@@ -207,12 +207,12 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="LAj-XZ-ifK">
-                                                        <rect key="frame" x="-2" y="20" width="374" height="30.5"/>
+                                                        <rect key="frame" x="-2" y="20" width="252" height="30.5"/>
                                                     </slider>
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleAspectFill" axis="vertical" distribution="fillProportionally" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="SWF-rE-qp1">
-                                                <rect key="frame" x="41" y="159.5" width="370" height="50"/>
+                                                <rect key="frame" x="102" y="159.5" width="248" height="50"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="VU Settling Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OXl-Za-NyK">
                                                         <rect key="frame" x="0.0" y="0.0" width="128.5" height="20"/>
@@ -221,7 +221,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="H2D-jw-B6x">
-                                                        <rect key="frame" x="-2" y="20" width="374" height="31"/>
+                                                        <rect key="frame" x="-2" y="20" width="252" height="31"/>
                                                     </slider>
                                                 </subviews>
                                             </stackView>
@@ -245,7 +245,7 @@
                                         <rect key="frame" x="472" y="0.0" width="452" height="289"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="BTp-Bj-D3D">
-                                                <rect key="frame" x="41" y="0.0" width="370" height="50"/>
+                                                <rect key="frame" x="102" y="0.0" width="248" height="50"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Peak Hold Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rhh-j4-6sp">
                                                         <rect key="frame" x="0.0" y="0.0" width="120" height="20"/>
@@ -254,12 +254,12 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="1rJ-mv-ozi">
-                                                        <rect key="frame" x="-2" y="20" width="374" height="31"/>
+                                                        <rect key="frame" x="-2" y="20" width="252" height="31"/>
                                                     </slider>
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="Sef-YQ-rbO">
-                                                <rect key="frame" x="41" y="80" width="370" height="49.5"/>
+                                                <rect key="frame" x="102" y="80" width="248" height="49.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RMS Hold Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wvJ-Cb-ml7">
                                                         <rect key="frame" x="0.0" y="0.0" width="118.5" height="20"/>
@@ -268,12 +268,12 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="ka2-24-E7I">
-                                                        <rect key="frame" x="-2" y="20" width="374" height="30.5"/>
+                                                        <rect key="frame" x="-2" y="20" width="252" height="30.5"/>
                                                     </slider>
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="EN7-cD-ULf">
-                                                <rect key="frame" x="41" y="159.5" width="370" height="50"/>
+                                                <rect key="frame" x="102" y="159.5" width="248" height="50"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="VU Hold Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="82M-Iq-9xe">
                                                         <rect key="frame" x="0.0" y="0.0" width="106" height="20"/>
@@ -282,7 +282,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="b0R-Ua-RhF">
-                                                        <rect key="frame" x="-2" y="20" width="374" height="31"/>
+                                                        <rect key="frame" x="-2" y="20" width="252" height="31"/>
                                                     </slider>
                                                 </subviews>
                                             </stackView>
@@ -336,7 +336,7 @@
                                 <rect key="frame" x="293" y="218" width="450.5" height="333.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleAspectFill" axis="vertical" distribution="fillProportionally" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="ych-Uf-tlt">
-                                        <rect key="frame" x="0.0" y="0.0" width="450.5" height="50.5"/>
+                                        <rect key="frame" x="154" y="0.0" width="142.5" height="50.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Peak Settling Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4fP-mC-UQM">
                                                 <rect key="frame" x="0.0" y="0.0" width="142.5" height="20.5"/>
@@ -345,12 +345,12 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="1oK-cm-19O">
-                                                <rect key="frame" x="-2" y="20.5" width="454.5" height="31"/>
+                                                <rect key="frame" x="-2" y="20.5" width="58" height="31"/>
                                             </slider>
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleAspectFill" axis="vertical" distribution="fillProportionally" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="29H-zS-9XK">
-                                        <rect key="frame" x="0.0" y="70.5" width="450.5" height="50.5"/>
+                                        <rect key="frame" x="155" y="70.5" width="141" height="50.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RMS Settling Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="26V-HP-8wR">
                                                 <rect key="frame" x="0.0" y="0.0" width="141" height="20.5"/>
@@ -359,12 +359,12 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="njz-N4-XdF">
-                                                <rect key="frame" x="-2" y="20.5" width="454.5" height="31"/>
+                                                <rect key="frame" x="-2" y="20.5" width="58" height="31"/>
                                             </slider>
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleAspectFill" axis="vertical" distribution="fillProportionally" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="3ta-Ct-fg6">
-                                        <rect key="frame" x="0.0" y="141" width="450.5" height="50.5"/>
+                                        <rect key="frame" x="169" y="141" width="113" height="50.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="XY - Auto Gain" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gvn-Te-2dV">
                                                 <rect key="frame" x="0.0" y="0.0" width="113" height="20.5"/>
@@ -373,12 +373,12 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="VBN-At-RMl">
-                                                <rect key="frame" x="-2" y="20.5" width="454.5" height="31"/>
+                                                <rect key="frame" x="-2" y="20.5" width="58" height="31"/>
                                             </slider>
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleAspectFill" axis="vertical" distribution="fillProportionally" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="vYj-ow-JcB">
-                                        <rect key="frame" x="0.0" y="211.5" width="450.5" height="50.5"/>
+                                        <rect key="frame" x="155.5" y="211.5" width="139.5" height="50.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="XY - Settling Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EGU-VA-Ict">
                                                 <rect key="frame" x="0.0" y="0.0" width="139.5" height="20.5"/>
@@ -387,7 +387,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="X7g-vq-QCm">
-                                                <rect key="frame" x="-2" y="20.5" width="454.5" height="31"/>
+                                                <rect key="frame" x="-2" y="20.5" width="58" height="31"/>
                                             </slider>
                                         </subviews>
                                     </stackView>

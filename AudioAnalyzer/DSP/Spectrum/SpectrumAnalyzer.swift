@@ -8,44 +8,52 @@
 
 import Foundation
 import AVFoundation
+import Accelerate
 
 class SpectrumAnalyzer {
-
-    var audioSession = AVAudioSession.sharedInstance()
-    var controller: AudioController!
-    var sampleRate: Double
-    var fftSize: Int
-
+    var audioController: AVAudioController!
     private var lFFT: FFT
     private var rFFT: FFT
-
     private var lBuf: UnsafeMutablePointer<Double>
     private var rBuf: UnsafeMutablePointer<Double>
+    private var lSpecNorm: UnsafeMutablePointer<Double>
+    private var rSpecNorm: UnsafeMutablePointer<Double>
+    private var lSpecdB: UnsafeMutablePointer<Double>
+    private var rSpecdB: UnsafeMutablePointer<Double>
+    private var lSpecdBNorm: UnsafeMutablePointer<Double>
+    private var rSpecdBNorm: UnsafeMutablePointer<Double>
+    private var normalMult: Double = 0;
+    private var normalAdd:  Double = 0;
 
-	private var lSpec: UnsafeMutablePointer<Double>
-    private var rSpec: UnsafeMutablePointer<Double>
-
+    var maxdBValue: Double =   0.0 { didSet{ calculateNormalizationAffineTransform() }}
+    var mindBValue: Double = -80.0 { didSet{ calculateNormalizationAffineTransform() }}
+    var ref: Double = 1.0
     var bins: [Double] { return lFFT.getBins() }
-    var numBins: Int { return fftSize }
+    var numBins: Int { return Int(lFFT.fftSize) }
+    var fftSize: Int { return Int(lFFT.fftSize) }
 
     private var writePos = 0 { didSet {
-            if writePos == fftSize {
-                computeSpectrum()
-                writePos = 0
-            } }
-    }
+        if writePos == fftSize { computeSpectrum(); writePos = 0 } } }
 
-    init(fftSize: Int) {
-        self.fftSize = fftSize
-        sampleRate = audioSession.sampleRate
-        lFFT = FFT(fftSize: self.fftSize, sampleRate: sampleRate)
-        rFFT = FFT(fftSize: self.fftSize, sampleRate: sampleRate)
+    init(_ controller: AVAudioController) {
+		audioController = controller
 
-        lBuf = UnsafeMutablePointer<Double>.allocate(capacity: fftSize)
-        rBuf = UnsafeMutablePointer<Double>.allocate(capacity: fftSize)
+        let fftSz = Int(controller.bufSize)
+        let fs = audioController.sampleRate
 
-        lSpec = UnsafeMutablePointer<Double>.allocate(capacity: fftSize)
-        rSpec = UnsafeMutablePointer<Double>.allocate(capacity: fftSize)
+        lFFT = FFT(fftSize: UInt32(fftSz), sampleRate: fs)
+        rFFT = FFT(fftSize: UInt32(fftSz), sampleRate: fs)
+
+        lBuf = UnsafeMutablePointer<Double>.allocate(capacity: fftSz)
+        rBuf = UnsafeMutablePointer<Double>.allocate(capacity: fftSz)
+        lSpecNorm = UnsafeMutablePointer<Double>.allocate(capacity: fftSz)
+        rSpecNorm = UnsafeMutablePointer<Double>.allocate(capacity: fftSz)
+        lSpecdB = UnsafeMutablePointer<Double>.allocate(capacity: fftSz)
+        rSpecdB = UnsafeMutablePointer<Double>.allocate(capacity: fftSz)
+        lSpecdBNorm = UnsafeMutablePointer<Double>.allocate(capacity: fftSz)
+        rSpecdBNorm = UnsafeMutablePointer<Double>.allocate(capacity: fftSz)
+
+        calculateNormalizationAffineTransform()
     }
 
     func run() {
@@ -58,9 +66,9 @@ class SpectrumAnalyzer {
     }
 
     func installTap() {
-        if let input = controller?.input {
+        if let input = audioController?.input {
             if input.numberOfInputs == 2 {
-            input.installTap(onBus: 0, bufferSize: controller!.bufSize, format: input.outputFormat(forBus: 0), block: { (buffer, timeStamp) in
+            input.installTap(onBus: 0, bufferSize: audioController!.bufSize, format: input.outputFormat(forBus: 0), block: { (buffer, timeStamp) in
                 if let data = buffer.floatChannelData {
                     let bufSize = Int(buffer.frameLength)
                     for i in 0..<bufSize {
@@ -68,7 +76,7 @@ class SpectrumAnalyzer {
                     }
                 }
             })} else {
-            input.installTap(onBus: 0, bufferSize: controller!.bufSize, format: input.outputFormat(forBus: 0), block: { (buffer, timeStamp) in
+            input.installTap(onBus: 0, bufferSize: audioController!.bufSize, format: input.outputFormat(forBus: 0), block: { (buffer, timeStamp) in
                 if let data = buffer.floatChannelData {
                     let bufSize = Int(buffer.frameLength)
                     for i in 0..<bufSize {
@@ -80,7 +88,7 @@ class SpectrumAnalyzer {
     }
 
     func removeTap() {
-        if let input = controller?.input{
+        if let input = audioController?.input{
             input.removeTap(onBus: 0)
         }
     }
@@ -92,50 +100,30 @@ class SpectrumAnalyzer {
     }
 
     func computeSpectrum() {
-        lFFT.process(dataPtr: lBuf, fftMagPtr: lSpec)
-        rFFT.process(dataPtr: rBuf, fftMagPtr: rSpec)
+        lFFT.process(dataPtr: lBuf, fftMagPtr: lSpecNorm)
+        rFFT.process(dataPtr: rBuf, fftMagPtr: rSpecNorm)
     }
 
-    func getSpectrum() -> (left: [Double], right: [Double]) {
-//        assert(writePos != fftSize)
-
-        var left: [Double] = [Double]()
-        var right: [Double] = [Double]()
-
-        left.reserveCapacity(fftSize)
-        right.reserveCapacity(fftSize)
-
-        for i in 0..<fftSize {
-            left.append(20 * log10(lSpec[i]))
-            right.append(20 * log10(rSpec[i]))
-        }
-
-        return (left, right)
+    func getSpectrumPtrs() -> (leftPtr: UnsafeMutablePointer<Double>, rightPtr: UnsafeMutablePointer<Double>) {
+        return (leftPtr: lSpecdBNorm, rightPtr: rSpecdBNorm)
     }
 
-    func getLeftSpectrum() -> [Double] {
-        var left: [Double] = [Double]()
-
-        left.reserveCapacity(fftSize)
-
-        for i in 0..<fftSize {
-            left.append(20 * log10(lSpec[i]))
-        }
-
-        return left
+    func triggerUpdate(completion: () -> Void) {
+        calculateNormlizeddBSpectrum()
+        completion()
     }
 
-    func getRightSpectrum() -> [Double] {
-        assert(writePos != fftSize)
+    func calculateNormlizeddBSpectrum() {
+        vDSP_vdbconD(lSpecNorm, 1, &ref, lSpecdB, 1, lFFT.fftSize, 1)
+        vDSP_vdbconD(rSpecNorm, 1, &ref, rSpecdB, 1, lFFT.fftSize, 1)
+        vDSP_vsmsaD(lSpecdB, 1, &normalMult, &normalAdd, lSpecdBNorm, 1, lFFT.fftSize)
+        vDSP_vsmsaD(rSpecdB, 1, &normalMult, &normalAdd, rSpecdBNorm, 1, lFFT.fftSize)
+    }
 
-        var right: [Double] = [Double]()
-        right.reserveCapacity(fftSize)
 
-        for i in 0..<fftSize {
-            right.append(20 * log10(lSpec[i]))
-        }
-
-        return right
+    func calculateNormalizationAffineTransform() {
+        normalMult = 1.0/(maxdBValue - mindBValue)
+        normalAdd = -mindBValue/(maxdBValue - mindBValue)
     }
 }
 

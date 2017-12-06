@@ -13,21 +13,31 @@ class SpectrumViewController: UIViewController {
 
     var timer = Timer()
 
-    var controller = AudioController(bufSize: 1024)
-    var analyzer = SpectrumAnalyzer(fftSize: 2048)
-    var spectrumVertLimits: (min: Double, max: Double) = (-60, 10)
+    var audioController: AVAudioController { return (UIApplication.shared.delegate as! AppDelegate).audioController }
+    var analyzer:SpectrumAnalyzer!
+    var spectrumVertLimits: (min: Double, max: Double) = (-40, 10)
     var spectrumHorzLimits: (min: Double, max: Double) = (0, 22050)
 
-    @IBOutlet weak var spectrum: SpectrumView!
+    var lPlotPtr: UnsafeMutableRawPointer!
+    var rPlotPtr: UnsafeMutableRawPointer!
+    var lAnaPtr:  UnsafeMutableRawPointer!
+    var rAnaPtr:  UnsafeMutableRawPointer!
+
+    @IBOutlet weak var spectrumView: SpectrumView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        analyzer.controller = controller
+        analyzer = SpectrumAnalyzer(audioController)
         analyzer.run()
 
-        spectrumVertLimits = (-120, 10)
-        spectrumHorzLimits = (0, 22050)
+        spectrumView.fftSize = analyzer.fftSize
+        let ptr2Copy = spectrumView.initializeMemoryForPlot(forSize: analyzer.fftSize)
+        let ptr4Copy = analyzer.getSpectrumPtrs()
+
+        lPlotPtr = UnsafeMutableRawPointer(ptr2Copy.leftPtr)
+        rPlotPtr = UnsafeMutableRawPointer(ptr2Copy.rightPtr)
+        lAnaPtr  = UnsafeMutableRawPointer(ptr4Copy.leftPtr)
+        rAnaPtr  = UnsafeMutableRawPointer(ptr4Copy.rightPtr)
 
         setSpectrumViewNormalBins()
 
@@ -37,16 +47,18 @@ class SpectrumViewController: UIViewController {
         })
     }
 
-    func updateSpectrum() {
-        let values = analyzer.getSpectrum()
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        timer.invalidate()
+        analyzer.stop()
+    }
 
-        let leftNormValues = values.left.map{
-            -$0 / spectrumVertLimits.min
+    func updateSpectrum() {
+        analyzer.triggerUpdate {
+            lPlotPtr.copyBytes(from: lAnaPtr, count: analyzer.fftSize * MemoryLayout<Double>.size)
+            rPlotPtr.copyBytes(from: rAnaPtr, count: analyzer.fftSize * MemoryLayout<Double>.size)
+            spectrumView.setNeedsDisplay()
         }
-        let rightNormValues = values.right.map{
-            -$0 / spectrumVertLimits.min
-        }
-        spectrum.setValues(left: leftNormValues, right: rightNormValues)
     }
 
     func setSpectrumViewNormalBins() {
@@ -56,7 +68,7 @@ class SpectrumViewController: UIViewController {
         let max = 1.0
         let logBins = linNormBins.map{ log(($0 + min)/min) / log(max/min) }
 
-        spectrum.setNormLogBins(logBins)
+        spectrumView.setNormLogBins(logBins)
     }
 
 

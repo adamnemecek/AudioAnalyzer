@@ -10,16 +10,16 @@ import UIKit
 
 class SpatialViewController: UIViewController {
 
+    var audioController: AVAudioController { return (UIApplication.shared.delegate as! AppDelegate).audioController }
+    var analyzer: SpatialAnalyzer!
     var timer = Timer()
-    var controller = AudioController(bufSize: 1024)
-    var analyzer = SpatialAnalyzer()
 
     @IBOutlet weak var lissajousView: LissajousView!
     @IBOutlet weak var phaseMeterView: PhaseMeterView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        analyzer.controller = controller
+        analyzer = SpatialAnalyzer(audioController)
         analyzer.run()
         timer.invalidate()
         timer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true, block: { (timer) in

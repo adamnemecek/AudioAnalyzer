@@ -10,23 +10,19 @@ import UIKit
 
 class SpectrumView: UIView {
 
-    var lNormMags = [CGFloat]()
-    var rNormMags = [CGFloat]()
+    var lNormMags: UnsafeMutablePointer<Double>?
+    var rNormMags: UnsafeMutablePointer<Double>?
     var normLogBins = [CGFloat]()
+    var fftSize: Int?
 
-    func setValues(left: [Double], right: [Double]) {
-        lNormMags = left.map{CGFloat($0)}
-        rNormMags = right.map{CGFloat($0)}
-        setNeedsDisplay()
+    func initializeMemoryForPlot(forSize size: Int) -> (leftPtr: UnsafeMutablePointer<Double>, rightPtr: UnsafeMutablePointer<Double>) {
+        lNormMags = UnsafeMutablePointer<Double>.allocate(capacity: size)
+        rNormMags = UnsafeMutablePointer<Double>.allocate(capacity: size)
+        return (leftPtr: lNormMags!, rightPtr: rNormMags!)
     }
 
     func setNormLogBins(_ bins: [Double]) {
         normLogBins = bins.map{ CGFloat($0) }
-    }
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        backgroundColor = UIColor.clear
     }
 
     override func draw(_ rect: CGRect) {
@@ -38,13 +34,15 @@ class SpectrumView: UIView {
     func drawSpectralPath(rect: CGRect) {
         let leftPath = UIBezierPath()
         let rightPath = UIBezierPath()
-        for n in lNormMags.indices {
+        for n in 0..<(fftSize ?? 0) {
+            let lMag = CGFloat(lNormMags![n])
+            let rMag = CGFloat(rNormMags![n])
             if n == 0 {
-                leftPath.move(to: CGPoint(x: rect.minX, y: rect.midY - rect.midY * lNormMags[0]))
-                rightPath.move(to: CGPoint(x: rect.minX, y: rect.midY - rect.midY * rNormMags[0]))
+                leftPath.move(to: CGPoint(x: rect.minX, y: rect.midY - rect.midY * lMag))
+                rightPath.move(to: CGPoint(x: rect.minX, y: rect.midY - rect.midY * rMag))
             } else {
-                leftPath.addLine(to: CGPoint(x: rect.minX + rect.maxX * normLogBins[n], y: rect.midY - rect.midY * lNormMags[n]))
-                rightPath.addLine(to: CGPoint(x: rect.minX + rect.maxX * normLogBins[n], y: rect.midY - rect.midY * rNormMags[n]))
+                leftPath.addLine(to: CGPoint(x: rect.minX + rect.maxX * normLogBins[n], y: rect.midY - rect.midY * lMag))
+                rightPath.addLine(to: CGPoint(x: rect.minX + rect.maxX * normLogBins[n], y: rect.midY - rect.midY * rMag))
             }
         }
         UIColor.blue.setStroke()

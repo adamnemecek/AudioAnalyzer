@@ -13,23 +13,23 @@ import AVFoundation
 
 class DynamicsAnalyzer {
 
-    var audioSession = AVAudioSession.sharedInstance()
-    var controller: AudioController!
+    var audioController: AVAudioController!
+    var lMeter: Meter
+    var rMeter: Meter
+    var mMeter: Meter
+    var sMeter: Meter
 
-    lazy var lMeter = Meter(sampleRate: sampleRate, withName: "Left Meter")
-    lazy var rMeter = Meter(sampleRate: sampleRate, withName: "Right Meter")
-    lazy var mMeter = Meter(sampleRate: sampleRate, withName: "Mid Meter")
-    lazy var sMeter = Meter(sampleRate: sampleRate, withName: "Side Meter")
-
-    var sampleRate: Double
-
-    init() {
-        sampleRate = audioSession.sampleRate
+    init(_ controller: AVAudioController) {
+        audioController = controller
+        lMeter = Meter(sampleRate: audioController.sampleRate, withName: "Left Meter")
+        rMeter = Meter(sampleRate: audioController.sampleRate, withName: "Right Meter")
+        mMeter = Meter(sampleRate: audioController.sampleRate, withName: "Mid Meter")
+        sMeter = Meter(sampleRate: audioController.sampleRate, withName: "Side Meter")
     }
 
     func run() {
         stop()
-		installTap()
+        installTap()
     }
 
     func stop() {
@@ -37,9 +37,9 @@ class DynamicsAnalyzer {
     }
 
     func installTap() {
-        if let input = controller?.input {
+        if let input = audioController?.input {
             if input.numberOfInputs == 2 {
-                input.installTap(onBus: 0, bufferSize: controller!.bufSize, format: input.outputFormat(forBus: 0), block: { (buffer, timeStamp) in
+                input.installTap(onBus: 0, bufferSize: audioController!.bufSize, format: input.outputFormat(forBus: 0), block: { (buffer, timeStamp) in
                     if let data = buffer.floatChannelData {
                         let bufSize = Int(buffer.frameLength)
                         for i in 0..<bufSize {
@@ -47,7 +47,7 @@ class DynamicsAnalyzer {
                         }
                     }
                 })} else {
-                input.installTap(onBus: 0, bufferSize: controller!.bufSize, format: input.outputFormat(forBus: 0), block: { (buffer, timeStamp) in
+                input.installTap(onBus: 0, bufferSize: audioController!.bufSize, format: input.outputFormat(forBus: 0), block: { (buffer, timeStamp) in
                     if let data = buffer.floatChannelData {
                         let bufSize = Int(buffer.frameLength)
                         for i in 0..<bufSize {
@@ -59,19 +59,19 @@ class DynamicsAnalyzer {
     }
 
     func removeTap() {
-        if let input = controller?.input{
+        if let input = audioController?.input{
             input.removeTap(onBus: 0)
         }
     }
 
     func process(leftInput: Float, rightInput: Float) {
 
-		let l = Double(leftInput)
+        let l = Double(leftInput)
         let r = Double(rightInput)
-		let m = (l + r) / 2
-		let s = (l - r) / 2
+        let m = (l + r) / 2
+        let s = (l - r) / 2
 
-		lMeter.process(input: l)
+        lMeter.process(input: l)
         rMeter.process(input: r)
         mMeter.process(input: m)
         sMeter.process(input: s)

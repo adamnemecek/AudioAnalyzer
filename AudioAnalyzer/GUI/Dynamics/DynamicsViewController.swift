@@ -10,10 +10,10 @@ import UIKit
 
 class DynamicsViewController: UIViewController {
 
-	var timer = Timer()
-
-	var controller = AudioController(bufSize: 1024)
-    var analyzer = DynamicsAnalyzer()
+    var audioController: AVAudioController { return (UIApplication.shared.delegate as! AppDelegate).audioController }
+    
+    var analyzer: DynamicsAnalyzer!
+    var timer = Timer()
 
     @IBOutlet weak var lMeter: MeterView!
     @IBOutlet weak var rMeter: MeterView!
@@ -22,11 +22,8 @@ class DynamicsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        //
-        analyzer.controller = controller
+        analyzer = DynamicsAnalyzer(audioController)
         analyzer.run()
-
         timer.invalidate()
         timer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true, block: { (timer) in
             self.updateMeters()
@@ -40,12 +37,6 @@ class DynamicsViewController: UIViewController {
         mMeter.setDynamics(newValues: analyzer.mMeter.getCurrentValues())
         sMeter.setDynamics(newValues: analyzer.sMeter.getCurrentValues())
 
-    }
-
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
     override func viewWillDisappear(_ animated: Bool) {
